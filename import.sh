@@ -10,17 +10,19 @@ if [ -z "$TARGET_PAT" ]; then
     exit 1
 fi
 
-if [ "$#" -ne 5 ];
+if [ "$#" -ne 6 ];
 then
-    echo "Usage: $0 <org> <source repo url> <repo> <git archive url> <metadata archive url>"
+    echo "Usage: $0 <org> <source repo url> <source base url> <target repo name> <git archive url> <metadata archive url>"
+	echo "eg $0 octo-org https://HOST/org/repo https://HOST newrepo https://test.com/gitarchive.tar.gz https://test.com/metadata.tar.gz"
     exit 1
 fi
 
 target_org=$1
 source_repo_url=$2
-repo=$3
-git_archive_url=$4
-metadata_archive_url=$5
+source_url=$3
+repo=$4
+git_archive_url=$5
+metadata_archive_url=$6
 
 echo ""
 orgid=$(GH_TOKEN=$TARGET_PAT gh api "orgs/$target_org" -q .node_id)
@@ -29,11 +31,10 @@ echo "orgid: $orgid"
 
 migration_source_id=$(GH_TOKEN=$TARGET_PAT gh api graphql \
     -F name="GHES" \
-    -F "url=https://github.com" \
+    -F "url=$source_url" \
     -F "ownerId=$orgid" \
     -F type="GITHUB_ARCHIVE" \
-    -f query='
-mutation createMigrationSource(
+    -f query='mutation createMigrationSource(
 	$name: String!
 	$url: String!
 	$ownerId: ID!
