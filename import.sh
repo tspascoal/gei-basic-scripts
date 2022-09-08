@@ -25,11 +25,11 @@ git_archive_url=$5
 metadata_archive_url=$6
 
 echo ""
-orgid=$(GITHUB_TOKEN =$TARGET_PAT gh api "orgs/$target_org" -q .node_id)
+orgid=$(GITHUB_TOKEN=$TARGET_PAT gh api "orgs/$target_org" -q .node_id)
 
 echo "orgid: $orgid"
 
-migration_source_id=$(GITHUB_TOKEN =$TARGET_PAT gh api graphql \
+migration_source_id=$(GITHUB_TOKEN=$TARGET_PAT gh api graphql \
     -F name="GHES" \
     -F "url=$source_url" \
     -F "ownerId=$orgid" \
@@ -54,7 +54,7 @@ migration_source_id=$(GITHUB_TOKEN =$TARGET_PAT gh api graphql \
 
 echo "migration_source_id: $migration_source_id"
 
-migration_id=$(GITHUB_TOKEN =$TARGET_PAT gh api graphql \
+migration_id=$(GITHUB_TOKEN=$TARGET_PAT gh api graphql \
 -F sourceId="$migration_source_id" \
 -F ownerId="$orgid" \
 -F sourceRepositoryUrl="$source_repo_url" \
@@ -116,9 +116,9 @@ fi
 
 echo "migration id: ${migration_id}"
 
-"$script_path/_wait-for-import.sh" "${migration_id}"
+"$script_path/_wait_for_import.sh" "${migration_id}"
 
-logs_url=$(GITHUB_TOKEN =$TARGET_PAT gh api graphql \
+logs_url=$(GITHUB_TOKEN=$TARGET_PAT gh api graphql \
 	-F id="$migration_id" \
 	-f query='query ($id: ID!) {
 		node(id: $id) {
