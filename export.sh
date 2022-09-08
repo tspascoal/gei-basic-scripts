@@ -56,7 +56,7 @@ function export_archives() {
 
   echo -e "${info_color}Metadata export started with id $metadata_id"
 
-  "$script_path"/_wait-for-export.sh "$source_org" "$git_id" "$metadata_id"
+  "$script_path"/_wait_for_export.sh "$source_org" "$git_id" "$metadata_id"
 
   base_name="${repo}$(date +"%Y%m%d_%H%M_%S")"
 
@@ -67,9 +67,14 @@ function export_archives() {
   "$script_path"/_download_export.sh "$source_org" "$metadata_id" "$metadata_archive_name"
 }
 
-
 if [ $# -ne 2 ]; then
     echo "Usage: $0 <org> <repo>"
+    exit 1
+fi
+
+if ! "$script_path"/_validate_scopes.sh 
+then
+    echo -e "${error_color}Error: Missing scopes. Exiting\n\n"
     exit 1
 fi
 
