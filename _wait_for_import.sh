@@ -17,7 +17,7 @@ function getState() {
 
     local state
 
-	state=$(GITHUB_TOKEN =$TARGET_PAT gh api graphql \
+	state=$(GITHUB_TOKEN=$TARGET_PAT gh api graphql \
 	-F id="$id" \
 	-f query='query ($id: ID!) {
 		node(id: $id) {
@@ -36,7 +36,7 @@ function getState() {
 
     if [ "$state" == "FAILED" ] || [ "$state" == "FAILED_VALIDATION" ]; then
         >&2 echo "import failed, no need to wait for it. Dumping status:"
-        >&2 GITHUB_TOKEN =$TARGET_PAT gh api graphql \
+        >&2 GITHUB_TOKEN=$TARGET_PAT gh api graphql \
 			-F id="$id" \
 			-f query='query ($id: ID!) {
 				node(id: $id) {
