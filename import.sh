@@ -5,14 +5,13 @@ script_path=$(dirname "$0")
 ###
 
 info_color="\033[0;36m"
-error_color="\033[0;31m"
 
 if [ -z "$TARGET_PAT" ]; then
     echo "TARGET_PAT environment variable missing"
     exit 1
 fi
 
-if [ "$#" -ne 6 ];
+if [ "$#" -ne 5 ];
 then
     echo "Usage: $0 <org> <source repo url> <source base url> <target repo name> <git archive url> <metadata archive url>"
 	echo "eg $0 octo-org https://HOST/org/repo https://HOST newrepo https://test.com/gitarchive.tar.gz https://test.com/metadata.tar.gz"
@@ -21,10 +20,9 @@ fi
 
 target_org=$1
 source_repo_url=$2
-source_url=$3
-repo=$4
-git_archive_url=$5
-metadata_archive_url=$6
+repo=$3
+git_archive_url=$4
+metadata_archive_url=$5
 
 if [ -n "$GH_HOST" ];then
 	echo -e "${info_color}GH_HOST environment detected. Using github.com instead"
@@ -39,6 +37,8 @@ fi
 user=$(gh api user -q .login)
 
 echo using user "$user" for import
+
+source_url=$(dirname "$source_repo_url")
 
 echo ""
 orgid=$(GITHUB_TOKEN=$TARGET_PAT gh api "orgs/$target_org" -q .node_id)
