@@ -4,6 +4,8 @@
 script_path=$(dirname "$0")
 ###
 
+info_color="\033[0;36m"
+error_color="\033[0;31m"
 
 if [ -z "$TARGET_PAT" ]; then
     echo "TARGET_PAT environment variable missing"
@@ -23,6 +25,20 @@ source_url=$3
 repo=$4
 git_archive_url=$5
 metadata_archive_url=$6
+
+if [ -n "$GH_HOST" ];then
+	echo -e "${info_color}GH_HOST environment detected. Using github.com instead"
+	unset GH_HOST
+fi
+
+if [ -n "$GH_ENTERPRISE_TOKEN" ];then
+	echo -e "${info_color}GH_ENTERPRISE_TOKEN environment detected. Will ignore it and use TARGET_PAT instead"
+	unset GH_ENTERPRISE_TOKEN
+fi
+
+user=$(gh api user -q .login)
+
+echo using user "$user" for import
 
 echo ""
 orgid=$(GITHUB_TOKEN=$TARGET_PAT gh api "orgs/$target_org" -q .node_id)
