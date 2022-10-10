@@ -1,6 +1,6 @@
 # Github Enterprise Importer Basic scripts
 
-> This is just a quick hack, you **shouldn't us** this unless you have a very good reason to. Use [Github Enterprise Importer CLI](https://github.com/github/gh-gei) instead, which is fully featured, supported, maintaned and battle tested.
+> This is just a quick hack, you **shouldn't us** this unless you have a very good reason to. Use [Github Enterprise Importer CLI](https://github.com/github/gh-gei) instead, which is fully featured, supported, maintained and battle tested. Github Enterprise Importer CLI [supports both azure as well as S3](https://docs.github.com/en/early-access/enterprise-importer/migrating-repositories-with-github-enterprise-importer/migrating-repositories-to-github-enterprise-cloud/migrating-repositories-from-github-enterprise-server-to-github-enterprise-cloud#step-5-set-up-blob-storage)
 
 You can use this _basic_ scripts to migrate a repo from GHEC or GHES to GHEC, it is not fully automated and requires some manual steps.
 
