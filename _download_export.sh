@@ -13,4 +13,4 @@ if ! gh api -X GET "/orgs/$1/migrations/$2/archive" > "$3"; then
     exit 1
 fi
 
-echo "$3 size:  $(ls $3 -lh  | awk '{print $5}')"
+echo "$3 size:  $(du "$3" -a -h | awk '{print $1}')"
