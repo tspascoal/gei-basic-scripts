@@ -27,7 +27,7 @@ The token being used requires two permissions:
 - admin:org
 - repo
 
-See you how can configure GitHub CLIg [here](https://cli.github.com/manual/#configuration)
+See you how can configure GitHub CLI [here](https://cli.github.com/manual/#configuration)
 
 call `export.sh` to generate two archives that GEI can use to import a repo into GHEC.
 
