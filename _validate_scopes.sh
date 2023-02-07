@@ -3,6 +3,8 @@
 function array_contains {
   ARRAY=$2
   compare_with=$1
+  # There is not globbing since scopes have no wildcards
+  # shellcheck disable=SC2048
   for item in ${ARRAY[*]}
   do
     if [[ "$item" == "$compare_with" ]]
@@ -23,11 +25,15 @@ echo
 IFS='+' read -r -a scopes <<< "$scopeslist "
 
 # check repo scopelist
-
+missing=0
 if ! array_contains "repo" "${scopes[*]}"
   then echo "missing repo scope. Please add repo scope to your PAT"
+  missing=1
 fi
 
 if ! array_contains "admin:org" "${scopes[*]}"
   then echo "admin:org repo scope. Please add admin:org scope to your PAT"
+  missing=1
 fi
+
+exit $missing
