@@ -24,16 +24,15 @@ echo
 # split the scopes into an array
 IFS='+' read -r -a scopes <<< "$scopeslist "
 
-# check repo scopelist
 missing=0
-if ! array_contains "repo" "${scopes[*]}"
-  then echo "missing repo scope. Please add repo scope to your PAT"
-  missing=1
-fi
-
-if ! array_contains "admin:org" "${scopes[*]}"
-  then echo "admin:org repo scope. Please add admin:org scope to your PAT"
-  missing=1
-fi
+declare -a checkscopes=("repo" "admin:org")
+for scope in "${checkscopes[@]}"
+do
+    if ! array_contains "$scope" "${scopes[*]}"
+    then
+        echo "missing $scope scope. Please add $scope scope to your PAT"
+        missing=1
+    fi
+done
 
 exit $missing
