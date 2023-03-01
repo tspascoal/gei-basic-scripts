@@ -31,8 +31,7 @@ function getState() {
     echo "$state"
 }
 
-
-while [ "$state_git" != "exported" ] && [ "$state_metadata" != "exported" ]; do
+while [ "$state_git" != "exported" ] || [ "$state_metadata" != "exported" ]; do
     sleepvalue=${sleeptime[$sleepidx]}
     echo "sleeping for ${sleepvalue} seconds"
     sleep "${sleepvalue}"s
