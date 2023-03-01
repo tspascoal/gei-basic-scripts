@@ -39,8 +39,18 @@ while [ "$state_git" != "exported" ] || [ "$state_metadata" != "exported" ]; do
     state_git=$(getState "$org" "$git_id") || exit 1
     echo "$id git state=$state_git"
 
+    if [ "$state_git" == "failed" ]; then
+        echo "git export failed"
+        exit 1
+    fi
+
     state_metadata=$(getState "$org" "$metadata_id") || exit 1
     echo "$id metadata state=$state_metadata"
+
+    if [ "$state_metadata" == "failed" ]; then
+        echo "git metadata failed"
+        exit 1
+    fi
 
     sleepidx=$(((sleepidx + 1) % ${#sleeptime[@]}))
 done
