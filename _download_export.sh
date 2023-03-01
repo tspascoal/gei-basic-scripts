@@ -6,6 +6,7 @@ if [ $# -ne 3 ]; then
     exit 1
 fi
 
+echo ""
 echo " writing migration $2 from org $1 to $3"
 
 if ! gh api -X GET "/orgs/$1/migrations/$2/archive" > "$3"; then
