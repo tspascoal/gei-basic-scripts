@@ -13,7 +13,7 @@ fi
 
 if [ "$#" -ne 5 ];
 then
-    echo "Usage: $0 <org> <source repo url> <source base url> <target repo name> <git archive url> <metadata archive url>"
+    echo "Usage: $0 <org> <source repo url> <target repo name> <git archive url> <metadata archive url>"
 	echo "eg $0 octo-org https://HOST/org/repo https://HOST newrepo https://test.com/gitarchive.tar.gz https://test.com/metadata.tar.gz"
     exit 1
 fi
