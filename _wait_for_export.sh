@@ -1,14 +1,13 @@
 #!/bin/bash
 
-
-if [ $# -ne 3 ]; then
-    echo "Usage: $0 <org> <git metadata id> <metadata id>"
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <org> <id> [id...]"
     exit 1
 fi
 
 org=$1
-git_id=$2
-metadata_id=$3
+shift
+ids=("$@")
 
 sleeptime=(10 15 20 25 30 10 40 15 50 55 60)
 sleepidx=0
@@ -31,26 +30,27 @@ function getState() {
     echo "$state"
 }
 
-while [ "$state_git" != "exported" ] || [ "$state_metadata" != "exported" ]; do
+# initialize states with empty strings with the size of ids array
+states=("${ids[@]/#//}")
+
+while [[ "${states[*]}" != *"exported"* ]]; do
     sleepvalue=${sleeptime[$sleepidx]}
-    echo "sleeping for ${sleepvalue} seconds"
+    echo "  sleeping for ${sleepvalue} seconds"
     sleep "${sleepvalue}"s
 
-    state_git=$(getState "$org" "$git_id") || exit 1
-    echo "$id git state=$state_git"
+    # iterate over ids
+    for i in "${!ids[@]}"; do
+        # no need to call it if it's already exported
+        if [[ "${states[$i]}" != "exported" ]]; then
+            states[$i]=$(getState "$org" "${ids[$i]}") || exit 1
+            echo "  ${ids[$i]} state=${states[$i]}"
+        fi
 
-    if [ "$state_git" == "failed" ]; then
-        echo "git export failed"
-        exit 1
-    fi
-
-    state_metadata=$(getState "$org" "$metadata_id") || exit 1
-    echo "$id metadata state=$state_metadata"
-
-    if [ "$state_metadata" == "failed" ]; then
-        echo "git metadata failed"
-        exit 1
-    fi
+        if [[ "${states[$i]}" == "failed" ]]; then
+            echo "  export $i failed"
+            exit 1
+        fi
+    done    
 
     sleepidx=$(((sleepidx + 1) % ${#sleeptime[@]}))
 done
