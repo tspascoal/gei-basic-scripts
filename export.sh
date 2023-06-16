@@ -72,12 +72,15 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
+org=$1
+repo=$2
+
 if ! "$script_path"/_validate_scopes.sh 
 then
     echo -e "${error_color}Error: Missing scopes. Exiting\n\n"
     exit 1
 fi
 
-export_archives "$1" "$2"
+export_archives "$org" "$repo"
 
 echo -e "\n\n${info_color}Done"
